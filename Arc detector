@@ -60,7 +60,9 @@ while True:
 
 #loop to concat all the frame together to produce the video file
 for frames in Event_frame:
-    ffmpeg -r 6 -i frames%d.jpg -c:v libx264 -vf fps=25 -pix_fmt yuv420p concat_video.mp4
+    ffmpeg -r 6 -i frames%d.jpg -c:v libx264 -vf fps=25 -pix_fmt yuv420p concat_video.mp4               #frame concat together to produce the video 
+                                                                                                        # -r frame rate/speed of video file
+                                                                                                     
 #following result destroy all windows
 result = cv2.VideoWriter('maskedvideo.mp4', cv2.VideoWriter_fourcc(*'MJPG'),10, size)
 cap.release()
