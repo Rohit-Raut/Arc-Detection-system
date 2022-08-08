@@ -9,9 +9,6 @@ import time
 import numpy as np
 import subprocess
 #from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
-#FUNCTION takes the date and time from the file_name and convert it to the unix time format for the event current time synchronyzation 
-def getdate(filename):
-    
 
 #input the video file name to detect the arc
 file_name = input("Enter the File Name: ")
