@@ -8,7 +8,7 @@ import numpy as np
 import subprocess
 import pytesseract
 #from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
-#FUNCTION takes the date and time from the file_name and convert it to the unix time format for the event current time synchronyzation 
+# FUNCTION takes the date and time from the file_name and convert it to the unix time format for the event current time synchronyzation 
 
 file_name = input("Enter the File Name: ")
 video_file = open(file_name, "r")
@@ -17,12 +17,13 @@ video_file = open(file_name,"r")
 
 #video_start_time(file_name)
 thresholds = 252
-#import the video file form the system and look for the corresponding events
+# import the video file form the system and look for the corresponding events
 cap = cv2.VideoCapture(file_name)
 width  = cap.get(cv2.CAP_PROP_FRAME_WIDTH)   
 height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)  
 print("frame dimentions: ", width, height )
-object_detector = cv2.createBackgroundSubtractorMOG2()   #Extract the background
+# Extract the background
+object_detector = cv2.createBackgroundSubtractorMOG2()
 fps = cap.get(cv2.CAP_PROP_FPS) 
 frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 print(frame_count)
@@ -38,14 +39,16 @@ date_data = []
 while True:
     ret, frame=cap.read()
     if ret:
-        # frame[frame<=thresholds]=0
+        #frame[frame<=thresholds]=0
         mask = object_detector.apply(frame)
-        _, mask  = cv2.threshold(mask,254,255,cv2.THRESH_BINARY)        #mask the backgroubd to the color ratio of 255 for complete black color
+        # mask the background to the color ration of 255 for complete black color
+        _, mask  = cv2.threshold(mask,254,255,cv2.THRESH_BINARY)
         contours,_ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         res = cv2.bitwise_and(frame,frame,mask=mask)
         for cnt in contours:
             area = cv2.contourArea(cnt)
-            if area>10000:    #detect for the flashes above 1000pixel
+            # detect flashes over 1000pixel
+            if area>10000:
                 #print("Area of contour:", area)
                 #cv2.drawContours(frame, [cnt], -1, (0,255,0),2)
                 x = int(0)
@@ -56,7 +59,7 @@ while True:
                 rect = cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 # Cropping the text block for giving input to OCR
                 cropped = frame[y:y + h, x:x + w]      
-                # Open the file in append mode
+                ## Open the file in append mode
                 #file = open("recognized.txt", "a")
                 # Apply OCR on the cropped image
                 text = pytesseract.image_to_string(cropped)
